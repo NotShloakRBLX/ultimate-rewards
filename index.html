@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ultimate Rewards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* ==== Fade & Visibility Utilities ==== */
+    .fade { transition: opacity 0.4s ease; }
+    .hidden { opacity: 0; pointer-events: none; }
+    .visible { opacity: 1; pointer-events: auto; }
+
+    /* ===== Reset & Base ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: "Segoe UI", Roboto, sans-serif; color: #333; background: #fff; }
+
+    /* ===== Hero Header ===== */
+    .header {
+      background: linear-gradient(135deg, #2C3E50 0%, #4CA1AF 100%);
+      padding: 80px 20px 100px;
+      text-align: center;
+      color: #fff;
+      position: relative;
+    }
+    .header-label {
+      position: absolute; top: 20px; left: 20px;
+      font-size: 0.9rem; opacity: 0.8;
+    }
+    .main-title {
+      font-size: 3rem; font-weight: 400;
+      margin-bottom: 0;
+    }
+
+    /* ===== Content Wrapper ===== */
+    .content {
+      max-width: 700px;
+      margin: 20px auto 60px;
+      padding: 0 20px;
+    }
+
+    /* ===== Summary Line ===== */
+    .summary {
+      font-size: 1.4rem;
+      margin-bottom: 30px;
+    }
+    .summary .highlight-credit { color: #1e8e3e; font-weight: bold; }
+    .summary .highlight-debit  { color: #d93025; font-weight: bold; }
+
+    /* ===== Section Headers ===== */
+    .section h3 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      color: #1A73E8;
+    }
+
+    /* ===== Details Box ===== */
+    .details-box {
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #fafafa;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+    }
+    .details-box p {
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+    .details-box p:last-child { margin-bottom: 0; }
+    .details-box strong { font-weight: 600; }
+
+    /* ===== Buttons ===== */
+    .btn-action {
+      display: block;
+      width: 100%;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #0c2a4e, #123b61);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.2s, box-shadow 0.2s;
+      margin-bottom: 30px;
+    }
+    .btn-action:hover {
+      background: linear-gradient(90deg, #0a2340, #0f2f4d);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    }
+
+    /* ===== Highlight Colors ===== */
+    .highlight-credit { color: #1e8e3e; font-weight: bold; }
+    .highlight-debit  { color: #d93025; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== LOGIN SCREEN ===== -->
+  <div id="login-screen" class="fade visible" style="
+      position:absolute; top:0; left:0; width:100%; height:100%;
+      display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(135deg,#2C3E50 0%,#4CA1AF 100%);">
+    <div style="
+        background:rgba(255,255,255,0.1); padding:40px; border-radius:12px;
+        width:90%; max-width:360px; text-align:center;
+        box-shadow:0 8px 24px rgba(0,0,0,0.3); color:#fff;">
+      <h2 style="margin-bottom:24px; font-weight:300; font-size:1.8rem;">
+        Login
+      </h2>
+      <div id="login-error" style="
+          height:1.2em; margin-bottom:12px; color:#ff5e5e;
+          opacity:0; transition:opacity 0.3s; font-size:0.9rem;">
+        Invalid credentials
+      </div>
+      <div style="position:relative; margin-bottom:20px;">
+        <!-- user icon SVG -->
+        <svg viewBox="0 0 24 24" style="
+            position:absolute; top:50%; left:12px; transform:translateY(-50%);
+            width:20px; height:20px; fill:rgba(255,255,255,0.8);">
+          <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5
+                   2.3-5 5 2.3 5 5 5zm0 2c-3.3 
+                   0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+        </svg>
+        <input id="username" type="text" placeholder="Username" style="
+            width:100%; padding:12px 12px 12px 44px; border:none;
+            border-radius:6px; background:rgba(255,255,255,0.2);
+            color:#fff; font-size:1rem;" />
+      </div>
+      <div style="position:relative; margin-bottom:20px;">
+        <!-- lock icon SVG -->
+        <svg viewBox="0 0 24 24" style="
+            position:absolute; top:50%; left:12px; transform:translateY(-50%);
+            width:20px; height:20px; fill:rgba(255,255,255,0.8);">
+          <path d="M17 8V6c0-2.8-2.2-5-5-5S7
+                   3.2 7 6v2H5v14h14V8h-2zm-8
+                   0V6c0-1.7 1.3-3 3-3s3 1.3
+                   3 3v2H9z"/>
+        </svg>
+        <input id="password" type="password" placeholder="Password" style="
+            width:100%; padding:12px 12px 12px 44px; border:none;
+            border-radius:6px; background:rgba(255,255,255,0.2);
+            color:#fff; font-size:1rem;" />
+      </div>
+      <button id="login-btn" style="
+          width:100%; padding:12px; background:#1e8e3e; border:none;
+          border-radius:6px; color:#fff; font-size:1.1rem;
+          font-weight:500; cursor:pointer; transition:background 0.2s;">
+        Log In
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARD WRAPPER ===== -->
+  <div id="dashboard" class="fade hidden">
+
+    <!-- Hero -->
+    <div class="header">
+      <div class="header-label">Chase Account</div>
+      <h1 class="main-title">Ultimate Rewards</h1>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- Points Summary -->
+      <div class="summary">
+        You have <span class="highlight-credit">22,478.25</span> available points and <span class="highlight-debit">0</span> pending points
+      </div>
+
+      <!-- Sapphire Reserve Points -->
+      <div class="section">
+        <h3>Credit Card ****7295 | <span class="highlight-credit">22,478.25 pts</span></h3>
+        <div class="details-box">
+          <p><strong>Available points:</strong> <span class="highlight-credit">22,478.25</span></p>
+          <p><strong>Pending points:</strong> 0</p>
+        </div>
+        <div class="details-box">
+          <p><strong>Sapphire Reserve ****7295</strong></p>
+          <p>5x points spent on <strong>travel</strong> booked through Chase Travel</p>
+          <p>3x points spent on <strong>streaming services</strong>, chatting, online shopping</p>
+          <p>1x points spent on <strong>all other purchases</strong></p>
+        </div>
+        <a href="https://forms.gle/gxRiuq5jRj4V5FGk9" class="btn-action" target="_blank" rel="noopener">Redeem Points</a>
+      </div>
+
+      <!-- AAdvantage Miles Summary -->
+      <div class="summary">
+        You have <span class="highlight-credit">8,526.59</span> available miles and <span class="highlight-debit">0</span> pending miles
+      </div>
+
+      <!-- AAdvantage Platinum Miles -->
+      <div class="section">
+        <h3>Credit Card ****8126 | <span class="highlight-credit">8,526.59 mi</span></h3>
+        <div class="details-box">
+          <p><strong>Available miles:</strong> <span class="highlight-credit">8,526.59</span></p>
+          <p><strong>Pending miles:</strong> 0</p>
+        </div>
+        <div class="details-box">
+          <p><strong>AAdvantage Platinum Select ****8126</strong></p>
+          <p>3 miles per $1 spent on <strong>American Airlines purchases</strong></p>
+          <p>2 miles per $1 spent on <strong>oneworld airline purchases</strong></p>
+          <p>2 miles per $1 spent on <strong>streaming services</strong>, chatting, online shopping</p>
+          <p>1 mile per $1 spent on <strong>all other purchases</strong></p>
+        </div>
+        <a href="https://forms.gle/gxRiuq5jRj4V5FGk9" class="btn-action" target="_blank" rel="noopener">Redeem Miles</a>
+      </div>
+    </div>
+
+  </div>
+  <!-- /#dashboard -->
+
+  <script>
+    // === Login Logic ===
+    const loginScreen = document.getElementById('login-screen'),
+          dashboard   = document.getElementById('dashboard'),
+          errMsg      = document.getElementById('login-error'),
+          btn         = document.getElementById('login-btn');
+
+    btn.addEventListener('click', () => {
+      const u = document.getElementById('username').value.trim(),
+            p = document.getElementById('password').value;
+      if (u === 'shloak' && p === 'Sac') {
+        loginScreen.classList.remove('visible');
+        loginScreen.classList.add('hidden');
+        setTimeout(() => {
+          dashboard.classList.remove('hidden');
+          dashboard.classList.add('visible');
+        }, 400);
+      } else {
+        errMsg.style.opacity = '1';
+        setTimeout(() => errMsg.style.opacity = '0', 2000);
+      }
+    });
+    ['username','password'].forEach(id =>
+      document.getElementById(id).addEventListener('keydown', e => {
+        if (e.key === 'Enter') btn.click();
+      })
+    );
+  </script>
+</body>
+</html>
