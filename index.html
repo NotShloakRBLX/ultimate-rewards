@@ -6,21 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root{
-      --bg:#070f1d;
-      --panel:#0b162c;
-      --panel-2:#0a1326;
-      --text:#eaf3ff;
-      --muted:#9fb4cf;
-
-      --sapphire:#0ea5e9;
-      --cyan:#22d3ee;
-      --violet:#8b5cf6;
-      --gold:#f59e0b;
-      --emerald:#22c55e;
-
-      --glass: linear-gradient( to bottom right, rgba(13,24,44,.82), rgba(10,19,38,.82) ) padding-box,
-               linear-gradient(120deg, rgba(14,165,233,.6), rgba(34,211,238,.6)) border-box;
-      --glow: 0 24px 80px rgba(14,165,233,.22);
+      --bg:#0b0e17;
+      --text:#e8edf7;
+      --muted:#9fb0c7;
+      --glass: linear-gradient( to bottom right, rgba(16,21,40,.72), rgba(12,16,34,.72) ) padding-box,
+               linear-gradient(120deg, rgba(34,211,238,.55), rgba(139,92,246,.55)) border-box;
+      --glow: 0 24px 80px rgba(34,211,238,.22);
+      --brandCyan:#22d3ee;
+      --brandViolet:#8b5cf6;
+      --accent:#F6C342; /* reward gold */
+      --btn:#f4b400;
     }
 
     *{ box-sizing:border-box; }
@@ -31,117 +26,152 @@
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
 
-    /* ===== Hero ===== */
-    .hero{
-      position:relative; padding:86px 20px 110px; text-align:center; overflow:hidden;
-      background:
-        radial-gradient(1200px 700px at 10% -20%, rgba(14,165,233,.18), transparent 60%),
-        radial-gradient(1200px 800px at 90% 120%, rgba(139,92,246,.18), transparent 60%),
-        linear-gradient(180deg, #081426 0%, #070f1d 65%, #081426 100%);
-      border-bottom:1px solid rgba(255,255,255,.06);
+    /* ===== Backgrounds ===== */
+    .aurora{
+      position:fixed; inset:0; z-index:-2; pointer-events:none; overflow:hidden;
+      background: radial-gradient(1200px 700px at 10% -20%, rgba(34,211,238,.16), transparent 60%),
+                  radial-gradient(1200px 800px at 90% 120%, rgba(139,92,246,.16), transparent 60%),
+                  radial-gradient(900px 600px at 50% 10%, rgba(34,197,94,.12), transparent 60%),
+                  linear-gradient(180deg, #0a0d16 0%, #0b0e17 60%, #0a0d16 100%);
     }
-    .hero::after{
+    .aurora::before,.aurora::after{
       content:""; position:absolute; inset:-30%;
-      background: conic-gradient(from 0turn, rgba(14,165,233,.10), rgba(139,92,246,.10), rgba(245,158,11,.08), rgba(14,165,233,.10));
-      filter: blur(70px); animation: swirl 32s linear infinite; opacity:.8;
+      background: conic-gradient(from 0turn, rgba(34,211,238,.10), rgba(139,92,246,.10), rgba(34,197,94,.10), rgba(34,211,238,.10));
+      filter: blur(70px); animation: swirl 28s linear infinite;
     }
+    .aurora::after{ animation-duration: 40s; animation-direction: reverse; opacity:.7; }
     @keyframes swirl{ to{ transform: rotate(1turn); } }
-
-    .brand{
-      position:relative; z-index:1;
-      font-weight:900; letter-spacing:.4px;
-      font-size: clamp(1.9rem, 4vw, 2.8rem);
-      background: linear-gradient(100deg, #7dd3fc, #60a5fa 35%, #22d3ee 65%, #f59e0b);
-      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-      text-shadow: 0 0 30px rgba(96,165,250,.25);
-    }
-    .subtitle{
-      position:relative; z-index:1; margin-top:8px; color:#cfe2ff;
+    .grid{
+      position:fixed; inset:0; z-index:-1; pointer-events:none;
+      background:
+        linear-gradient(transparent 79px, rgba(120,150,210,.06) 80px),
+        linear-gradient(90deg, transparent 79px, rgba(120,150,210,.06) 80px);
+      background-size:80px 80px;
+      mask: radial-gradient(60% 60% at 50% 50%, #000 70%, transparent 100%);
     }
 
-    /* ===== Layout ===== */
-    .container{ max-width:1200px; margin: -50px auto 80px; padding:0 20px; position:relative; z-index:2; }
-    .cards{ display:grid; grid-template-columns: repeat(12, 1fr); gap:16px; }
-    .card{
-      grid-column: span 6; border-radius:18px; padding:18px; background: var(--glass);
-      border:2px solid transparent; color:var(--text);
-      box-shadow: var(--glow), inset 0 0 0 1px rgba(255,255,255,.03);
-      backdrop-filter: blur(10px);
-      transition: transform .06s, filter .25s;
-    }
-    .card:hover{ transform: translateY(-2px); filter: saturate(1.06); }
-    .card h3{ margin:0 0 8px; font-weight:800; color:#eaf2ff; display:flex; align-items:center; gap:10px; }
-    .muted{ color:var(--muted); }
-
-    .stat-lg{
-      font-size: clamp(1.8rem, 4vw, 2.4rem);
-      font-weight:900;
-      letter-spacing:.4px;
-      line-height:1.1;
-      background: linear-gradient(90deg, #7dd3fc, #22d3ee 50%, #fbbf24);
-      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-      text-shadow: 0 6px 22px rgba(14,165,233,.25);
-    }
-    .stat-sub{ margin-top:4px; font-weight:700; color:#d9ffe9; }
-
-    .kv{ display:flex; justify-content:space-between; padding:8px 0; border-top:1px solid rgba(255,255,255,.08); }
-    .kv:first-child{ border-top:none; }
-
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:6px 10px; border-radius:999px; font-size:.9rem; color:#dfe9ff;
-      background: linear-gradient(120deg, #0c1a34, #0b172e); border:1px solid rgba(255,255,255,.10);
-    }
-
-    .cta{
-      width:100%; display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      padding:14px; border-radius:14px; cursor:pointer; margin-top:16px;
-      background: linear-gradient(100deg, #f59e0b, #fbbf24); color:#1a1202; font-weight:900;
-      border:1px solid rgba(251,191,36,.5); box-shadow: 0 16px 40px rgba(245,158,11,.25);
-      text-decoration:none;
-      transition: transform .05s, filter .2s;
-    }
-    .cta:hover{ filter:saturate(1.08); }
-    .cta svg{ width:20px; height:20px; }
-
-    .icon{ width:22px; height:22px; filter: drop-shadow(0 2px 6px rgba(14,165,233,.45)); }
-
-    .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    @media (max-width: 980px){ .card{ grid-column: span 12; } .grid-2{ grid-template-columns: 1fr; } }
-
-    /* ===== Login overlay ===== */
+    /* ===== Utilities ===== */
     .fade{ transition:opacity .4s ease; }
     .hidden{ opacity:0; pointer-events:none; }
     .visible{ opacity:1; pointer-events:auto; }
+    .muted{ color:var(--muted); }
+
+    /* ===== Login ===== */
     #login-screen{
-      position:fixed; inset:0; display:flex; align-items:center; justify-content:center; padding:24px; z-index:9999;
-      background: radial-gradient(1000px 600px at 10% -10%, rgba(14,165,233,.18), transparent 60%),
-                  radial-gradient(1000px 700px at 90% 120%, rgba(139,92,246,.18), transparent 60%),
-                  linear-gradient(180deg, #081426 0%, #070f1d 65%, #081426 100%);
+      position:fixed; inset:0; display:flex; align-items:center; justify-content:center; padding:24px;
     }
-    .login-shell{ width:min(440px, 94vw); border-radius:22px; padding:3px; background: linear-gradient(120deg, #22d3ee, #8b5cf6, #22d3ee); box-shadow: 0 26px 80px rgba(0,0,0,.65), 0 0 120px rgba(14,165,233,.35); }
-    #login-box{ border-radius:20px; padding:36px 30px 28px; text-align:center; color:#e8e7ef; background:#0c111f; box-shadow: inset 0 0 0 1px rgba(255,255,255,.05); }
-    .login-title{ font-size: clamp(1.8rem, 3.6vw, 2.2rem); font-weight:800; letter-spacing:.3px; background: linear-gradient(90deg, #22d3ee, #8b5cf6 45%, #22d3ee); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:22px; }
+    .login-shell{
+      width:min(440px, 94vw); border-radius:22px; padding:3px;
+      background: linear-gradient(120deg, var(--brandCyan), var(--brandViolet), var(--brandCyan));
+      box-shadow: 0 26px 80px rgba(0,0,0,.65), 0 0 120px rgba(34,211,238,.35);
+    }
+    #login-box{ border-radius:20px; padding:36px 30px 28px; text-align:center; background:#0c111f; }
+    .login-title{
+      font-size: clamp(1.8rem, 3.6vw, 2.2rem); font-weight:900;
+      background: linear-gradient(90deg, var(--brandCyan), var(--brandViolet) 45%, var(--brandCyan));
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      margin-bottom:22px;
+    }
     #login-error{ height:1.2em; margin-bottom:12px; color:#ff6b6b; opacity:0; transition:opacity .3s; }
     .input-group{ position:relative; margin:14px 0; }
-    .input{ width:100%; padding:14px 14px 14px 50px; border-radius:14px; background:#0e152b; border:1px solid #213154; color:#e5e7eb; font-size:1rem; transition: border-color .2s, box-shadow .2s, background .2s; }
-    .input::placeholder{ color:#9ab1d7; }
-    .input:focus{ outline:none; border-color:#22d3ee; box-shadow:0 0 0 4px rgba(34,211,238,.18); background:#0c1430; }
+    .input{
+      width:100%; padding:14px 14px 14px 50px; border-radius:14px;
+      background:#0e152b; border:1px solid #213154; color:#e5e7eb; font-size:1rem;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+    .input:focus{ outline:none; border-color:var(--brandCyan); box-shadow:0 0 0 4px rgba(34,211,238,.18); background:#0c1430; }
     .input-icon{ position:absolute; top:50%; left:14px; transform:translateY(-50%); width:22px; height:22px; filter: drop-shadow(0 2px 4px rgba(34,211,238,.55)); }
-    #login-btn{ width:100%; display:flex; align-items:center; justify-content:center; gap:10px; padding:13px 16px; border-radius:14px; cursor:pointer; background:#0e1426; color:#fff; font-weight:800; border:1px solid #24325f; transition: box-shadow .2s, border-color .2s, transform .05s, filter .2s; }
-    #login-btn:hover, #login-btn:focus{ border-color:#22d3ee; box-shadow:0 0 0 4px rgba(34,211,238,.18); outline:none; filter:saturate(1.08); }
-    #login-btn:active{ transform:translateY(1px); }
-    .btn-icon{ width:20px; height:20px; filter: drop-shadow(0 2px 4px rgba(34,211,238,.45)); }
+    #login-btn{
+      width:100%; display:flex; align-items:center; justify-content:center; gap:10px;
+      padding:13px 16px; border-radius:14px; cursor:pointer;
+      background:#0e1426; color:#fff; font-weight:800; border:1px solid #24325f;
+      transition: box-shadow .2s, border-color .2s, transform .05s, filter .2s;
+    }
+    #login-btn:hover{ border-color:var(--brandCyan); box-shadow:0 0 0 4px rgba(34,211,238,.18); }
+
+    /* ===== Layout ===== */
+    .page{ position:absolute; inset:0; overflow:auto; }
+    .topbar{
+      position:sticky; top:0; z-index:5;
+      padding: calc(10px + env(safe-area-inset-top)) 20px 12px;
+      backdrop-filter: blur(10px);
+      background: linear-gradient( to right, rgba(8,12,24,.72), rgba(10,14,26,.58) );
+      border-bottom:1px solid rgba(255,255,255,.06);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .brand{
+      font-weight:900; letter-spacing:.3px;
+      background: linear-gradient(90deg, var(--brandCyan), var(--brandViolet));
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+    }
+    .container{ max-width:1100px; margin:24px auto 80px; padding:0 20px; }
+    .cards{ display:grid; grid-template-columns: repeat(12, 1fr); gap:16px; }
+
+    /* ===== UR Cards ===== */
+    .card{
+      grid-column: span 6;
+      border-radius:20px; padding:20px; background:var(--glass); border:2px solid transparent;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--glow), inset 0 0 0 1px rgba(255,255,255,.03);
+    }
+    .card h3{ margin:0 0 4px; font-weight:900; }
+    .sub{ color:#cfe6ff; opacity:.9; margin-bottom:12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+
+    /* Big numbers that won’t overflow on mobile */
+    .value{
+      line-height:1.05; margin:6px 0 6px;
+      background: linear-gradient(90deg, #5ad7ff, #53b8ff 40%, #ffd466 100%);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      display:block;
+      word-break: break-word;
+    }
+    .value .big{ font-weight:900; font-size: clamp(2rem, 9vw, 3.2rem); }
+    .value .unit{ font-weight:800; font-size: clamp(1.3rem, 5.2vw, 1.8rem); margin-left:8px; -webkit-text-fill-color:#e7f2ff; color:#e7f2ff; }
+
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px; background:#0f1222; border:1px solid rgba(255,255,255,.08);
+      margin:10px 0 14px; color:#e7e9ff;
+    }
+
+    .list{ margin:8px 0 16px; padding-left:0; list-style:none; }
+    .list li{ margin:8px 0; color:#dbe7ff; }
+    .list li strong{ color:#fff; }
+
+    .cta{
+      width:100%; display:flex; align-items:center; justify-content:center; gap:10px;
+      padding:14px; border-radius:16px; background:linear-gradient(#f6c342, #f0b21e);
+      color:#132; font-weight:900; text-decoration:none; border:none;
+      box-shadow:0 12px 30px rgba(246,195,66,.25);
+    }
+    .cta svg{ width:20px; height:20px; }
+
+    /* ===== Mobile tweaks ===== */
+    @media (max-width: 760px){
+      .topbar{ flex-wrap:wrap; }
+      .container{ padding:0 12px; margin:16px auto 64px; }
+      .cards{ grid-template-columns: 1fr; gap:12px; }
+      .card{ grid-column: 1 / -1; padding:16px; border-radius:18px; }
+      .sub{ gap:6px; }
+      .pill{ width:fit-content; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .page, .card, .cta{ transition:none !important; }
+      .aurora::before, .aurora::after{ animation:none !important; }
+    }
   </style>
 </head>
 <body>
+  <div class="aurora"></div>
+  <div class="grid"></div>
 
   <!-- ===== LOGIN ===== -->
   <div id="login-screen" class="fade visible">
     <div class="login-shell">
       <div id="login-box">
-        <h2 class="login-title">Sign in • Ultimate Rewards</h2>
-
+        <h2 class="login-title">Welcome to<br/>Ultimate Rewards</h2>
         <div id="login-error">Invalid credentials</div>
 
         <div class="input-group">
@@ -159,150 +189,79 @@
           <input id="password" class="input" type="password" placeholder="Password" />
         </div>
 
-        <button id="login-btn">
-          <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="#8b5cf6" d="M12 3a1 1 0 0 1 1 1v5h-2V5H6v14h5v-4h2v5a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7Zm8.7 9.3-4-4-1.4 1.4 1.3 1.3H12v2h4.6l-1.3 1.3 1.4 1.4 4-4a1 1 0 0 0 0-1.4Z"/>
-          </svg>
-          Log In
-        </button>
+        <button id="login-btn">Log In</button>
       </div>
     </div>
   </div>
 
-  <!-- ===== PAGE ===== -->
+  <!-- ===== DASHBOARD ===== -->
   <div id="dashboard" class="hidden fade">
-    <header class="hero">
-      <div class="brand">Ultimate Rewards</div>
-      <div class="subtitle">Sapphire-bright perks • live balances • fast redemption</div>
-    </header>
+    <div class="page">
+      <div class="topbar">
+        <div class="brand">Ultimate Rewards</div>
+      </div>
 
-    <main class="container">
-      <section class="cards">
-        <!-- UR CARD -->
-        <article class="card" style="grid-column: span 7;">
-          <h3>
-            <!-- diamond icon -->
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path fill="#7dd3fc" d="M12 3 3 9l9 12 9-12-9-6Zm0 2.3 5.2 3.5L12 18.2 6.8 8.8 12 5.3Z"/>
-            </svg>
-            Sapphire Reserve • ****7295
-          </h3>
-
-          <div class="grid-2">
-            <div>
-              <div class="stat-lg" id="urStat">22,478.25 pts</div>
-              <div class="stat-sub">Ultimate Rewards available</div>
-              <div class="chip" style="margin-top:10px;">Pending: <strong id="urPend">0</strong></div>
+      <div class="container">
+        <div class="cards">
+          <!-- Sapphire Reserve -->
+          <section class="card">
+            <h3>Sapphire</h3>
+            <div class="sub">
+              <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="#7dd3fc" d="M12 2 2 9l10 13 10-13-10-7Zm0 3.2 6.2 4.4L12 19.4 5.8 9.6 12 5.2Z"/></svg>
+              <strong>Reserve • ****7295</strong>
             </div>
 
-            <div>
-              <div class="kv"><span class="muted">Earning multipliers</span></div>
-              <div class="kv" style="border-top:none; display:block;">
-                <div class="muted">• 5x on <strong>travel via Chase Travel</strong></div>
-                <div class="muted">• 3x on <strong>streaming, chatting, online shopping</strong></div>
-                <div class="muted">• 1x on <strong>all other purchases</strong></div>
-              </div>
-              <a href="https://forms.gle/gxRiuq5jRj4V5FGk9" class="cta" target="_blank" rel="noopener">
-                <!-- gift icon -->
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7h-2.6A2.9 2.9 0 0 0 12 4.2 2.9 2.9 0 0 0 6.6 7H4a1 1 0 0 0-1 1v3h9V7h2v4h9V8a1 1 0 0 0-1-1ZM9.4 7A.9.9 0 1 1 12 6.1V7H9.4ZM2 13v6a2 2 0 0 0 2 2h7v-8H2Zm20 0h-9v8h7a2 2 0 0 0 2-2v-6Z" fill="#1a1202"/></svg>
-                Redeem Points
-              </a>
-            </div>
-          </div>
-        </article>
+            <div class="value"><span class="big">22,478.25</span><span class="unit">pts</span></div>
+            <div class="muted" style="margin-bottom:6px;">Ultimate Rewards available</div>
 
-        <!-- AA CARD -->
-        <article class="card" style="grid-column: span 5;">
-          <h3>
-            <!-- airplane icon -->
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path fill="#7dd3fc" d="M2 13v-2l9-4 1.5-4h2L13 7l6 3 3 2-3 2-6 3 1.5 4h-2L11 15l-9-4Z"/>
-            </svg>
-            AAdvantage Platinum • ****8126
-          </h3>
+            <div class="pill"><strong>Pending:</strong> 0</div>
 
-          <div class="grid-2">
-            <div>
-              <div class="stat-lg" id="aaStat">8,526.59 miles</div>
-              <div class="stat-sub">AAdvantage miles available</div>
-              <div class="chip" style="margin-top:10px;">Pending: <strong id="aaPend">0</strong></div>
+            <div class="muted" style="margin-top:4px;">Earning multipliers</div>
+            <ul class="list">
+              <li>• <strong>5x</strong> on <strong>travel</strong> via <strong>Chase Travel</strong></li>
+              <li>• <strong>3x</strong> on <strong>streaming services</strong>, chatting, online shopping</li>
+              <li>• <strong>1x</strong> on <strong>all other purchases</strong></li>
+            </ul>
+
+            <a href="https://forms.gle/gxRiuq5jRj4V5FGk9" target="_blank" rel="noopener" class="cta">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm0 3a3 3 0 1 1-3 3 3 3 0 0 1 3-3Zm0 14a7 7 0 0 1-5.917-3.166c.03-1.976 3.945-3.059 5.917-3.059s5.887 1.083 5.917 3.059A7 7 0 0 1 12 19Z"/></svg>
+              Redeem Points
+            </a>
+          </section>
+
+          <!-- AAdvantage Platinum -->
+          <section class="card">
+            <h3>AAdvantage</h3>
+            <div class="sub">
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="#ffd166" d="M12 2 9 8 2 9l5 4-1 7 6-3 6 3-1-7 5-4-7-1-3-6z"/></svg>
+              <strong>Platinum • ****8126</strong>
             </div>
 
-            <div>
-              <div class="kv"><span class="muted">Earning multipliers</span></div>
-              <div class="kv" style="border-top:none; display:block;">
-                <div class="muted">• 3 mi/$ on <strong>American Airlines</strong></div>
-                <div class="muted">• 2 mi/$ on <strong>oneworld airlines</strong></div>
-                <div class="muted">• 2 mi/$ on <strong>streaming, chatting, online shopping</strong></div>
-                <div class="muted">• 1 mi/$ on <strong>all other purchases</strong></div>
-              </div>
-              <a href="https://forms.gle/gxRiuq5jRj4V5FGk9" class="cta" target="_blank" rel="noopener">
-                <!-- trophy icon -->
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h3V2h10v2h3a1 1 0 0 1 1 1v3a5 5 0 0 1-5 5h-1a5 5 0 0 1-2 3.9V18h4v2H7v-2h4v-1.1A5 5 0 0 1 9 13H8a5 5 0 0 1-5-5V5a1 1 0 0 1 1-1Zm1 2v2a3 3 0 0 0 3 3h1V6H5Zm13 0h-4v5h1a3 3 0 0 0 3-3V6Z" fill="#1a1202"/></svg>
-                Redeem Miles
-              </a>
-            </div>
-          </div>
-        </article>
+            <div class="value"><span class="big">8,526.59</span><span class="unit">miles</span></div>
+            <div class="muted" style="margin-bottom:6px;">AAdvantage miles available</div>
 
-        <!-- SUMMARY -->
-        <article class="card" style="grid-column: span 12;">
-          <h3>
-            <!-- spark icon -->
-            <svg class="icon" viewBox="0 0 24 24"><path fill="#fbbf24" d="M12 2 9.8 7.2 4.3 8.3l4 3.7-.8 5.3 4.5-2.6 4.5 2.6-.8-5.3 4-3.7-5.5-1.1L12 2z"/></svg>
-            Program summary
-          </h3>
-          <div class="grid-2">
-            <div class="kv"><span class="muted">Available points (UR)</span><strong id="urSum">22,478.25</strong></div>
-            <div class="kv"><span class="muted">Pending points (UR)</span><strong id="urPendSum">0</strong></div>
-            <div class="kv"><span class="muted">Available miles (AA)</span><strong id="aaSum">8,526.59</strong></div>
-            <div class="kv"><span class="muted">Pending miles (AA)</span><strong id="aaPendSum">0</strong></div>
-          </div>
-        </article>
-      </section>
-    </main>
+            <div class="pill"><strong>Pending:</strong> 0</div>
+
+            <div class="muted" style="margin-top:4px;">Earning multipliers</div>
+            <ul class="list">
+              <li>• <strong>3 mi/$</strong> on <strong>American Airlines</strong></li>
+              <li>• <strong>2 mi/$</strong> on <strong>oneworld airlines</strong></li>
+              <li>• <strong>2 mi/$</strong> on <strong>streaming services</strong>, chatting, online shopping</li>
+              <li>• <strong>1 mi/$</strong> on <strong>all other purchases</strong></li>
+            </ul>
+
+            <a href="https://forms.gle/gxRiuq5jRj4V5FGk9" target="_blank" rel="noopener" class="cta">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.39 4.84 5.34.78-3.86 3.76.91 5.32L12 14.77l-4.78 2.5.91-5.32L4.27 7.62l5.34-.78L12 2z"/></svg>
+              Redeem Miles
+            </a>
+          </section>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    // ===== Data (same info you had) =====
-    const data = {
-      ur: { available: 22478.25, pending: 0 },
-      aa: { available: 8526.59,  pending: 0 }
-    };
-
-    // Format
-    const fmt = (n, decimals=2) =>
-      Number(n).toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-
-    // Simple count-up animation
-    function countUp(el, end, suffix='', dur=900){
-      const start = 0, startTime = performance.now();
-      function tick(t){
-        const p = Math.min(1, (t - startTime)/dur);
-        const val = start + (end - start)*p;
-        el.textContent = fmt(val) + (suffix?(' ' + suffix):'');
-        if(p < 1) requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-    }
-
-    // Populate numbers
-    const urStat = document.getElementById('urStat');
-    const aaStat = document.getElementById('aaStat');
-
-    countUp(urStat, data.ur.available, 'pts', 1100);
-    document.getElementById('urPend').textContent = data.ur.pending;
-
-    countUp(aaStat, data.aa.available, 'miles', 1100);
-    document.getElementById('aaPend').textContent = data.aa.pending;
-
-    // Summary mirrors
-    document.getElementById('urSum').textContent     = fmt(data.ur.available);
-    document.getElementById('urPendSum').textContent = data.ur.pending;
-    document.getElementById('aaSum').textContent     = fmt(data.aa.available);
-    document.getElementById('aaPendSum').textContent = data.aa.pending;
-
-    // ===== Login logic (same creds) =====
+    // ===== Login =====
     const loginScreen = document.getElementById('login-screen'),
           dashboard   = document.getElementById('dashboard'),
           errMsg      = document.getElementById('login-error'),
@@ -317,11 +276,10 @@
         setTimeout(() => {
           dashboard.classList.remove('hidden');
           dashboard.classList.add('visible');
-          window.scrollTo(0,0);
-        }, 300);
+        }, 280);
       } else {
         errMsg.style.opacity = '1';
-        setTimeout(() => errMsg.style.opacity = '0', 1800);
+        setTimeout(() => errMsg.style.opacity = '0', 1600);
       }
     }
     btn.addEventListener('click', tryLogin);
